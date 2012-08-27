@@ -30,6 +30,7 @@ int main(int argc, char** argv){
     string OutputFile = "output_2d.dat";
     bool MagFlag = false;
     bool LF = false;
+    double alpha;
     while (CurrentArg < argc)
     {
         if (argv[ CurrentArg ] == string("-i") || argv[ CurrentArg ] == string("--input"))
@@ -47,6 +48,10 @@ int main(int argc, char** argv){
         if (argv[ CurrentArg ] == string("-LF") || argv[ CurrentArg ] == string("--lowfield"))
         {
             LF = true;
+        }
+        if (argv[ CurrentArg ] == string("-s") || argv[ CurrentArg ] == string("-S"))
+        {
+	  alpha = atof(argv[ CurrentArg + 1]);
         }
 	
         CurrentArg++;
