@@ -29,6 +29,7 @@ int main(int argc, char** argv){
     string InputFile;
     string OutputFile = "output_2d.dat";
     bool MagFlag = false;
+    bool LF = false;
     while (CurrentArg < argc)
     {
         if (argv[ CurrentArg ] == string("-i") || argv[ CurrentArg ] == string("--input"))
@@ -43,6 +44,11 @@ int main(int argc, char** argv){
         {
             MagFlag = true;
         }
+        if (argv[ CurrentArg ] == string("-LF") || argv[ CurrentArg ] == string("--lowfield"))
+        {
+            LF = true;
+        }
+	
         CurrentArg++;
     }
 
@@ -83,7 +89,9 @@ int main(int argc, char** argv){
       for (unsigned int i=1; i<fileGraphs.size(); i++){ //skip the zeroth graph
         //---High-Field---
 
-        GENHAM HV(fileGraphs.at(i).Order, J, h, fileGraphs.at(i).AdjacencyList, fileGraphs.at(i).LowField); 
+        //GENHAM HV(fileGraphs.at(i).Order, J, h, fileGraphs.at(i).AdjacencyList, fileGraphs.at(i).LowField); 
+	// Uses flag from command line instead of param in graph file
+        GENHAM HV(fileGraphs.at(i).Order, J, h, fileGraphs.at(i).AdjacencyList, LF); 
 
         LANCZOS lancz(HV.Vdim);  //dimension of reduced Hilbert space (Sz sector)
         HV.SparseHamJQ();  //generates sparse matrix Hamiltonian for Lanczos
