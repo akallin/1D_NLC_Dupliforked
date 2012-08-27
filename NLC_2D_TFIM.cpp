@@ -21,7 +21,7 @@ using namespace std;
 #include "CPU/GenHam.h"
 #include "CPU/simparam.h"
 #include "CPU/magnetization.h"
-#include "../Graphs/graphs.h"
+#include "../../BossBranch/Graphs/graphs.h"
 
 int main(int argc, char** argv){
 
