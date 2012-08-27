@@ -1,25 +1,24 @@
-OBJS = NLC_1D_TFIM.o GenHam.o Lanczos_07.o graphs.o #Lattice_16B.cpp
 CC = g++
+OBJS = NLC_2D_TFIM.o CPU/magnetization.o CPU/GenHam.o CPU/Lanczos_07.o graphs.o
 CFLAGS = -O2 -fopenmp -Wall -Wextra --pedantic
-#CFLAGS = -O2 -arch x86_64
-#LIBS = -lm -framework veclib
 
-1d.out: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o 1d.out $(LIBS)
+2d-cpu.out: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o 2d-cpu.out $(HEISLIBS) $(LANCLIBS)
 
-NLC_1D_TFIM.o : NLC_1D_TFIM.cpp CPU/GenHam.h CPU/Lanczos_07.h CPU/simparam.h
-	$(CC) $(CFLAGS) -c NLC_1D_TFIM.cpp
+NLC_2D_TFIM.o : NLC_2D_TFIM.cpp CPU/GenHam.h CPU/Lanczos_07.h CPU/simparam.h ../../BossBranch/Graphs/graphs.h
+	$(CC) $(CFLAGS) -c NLC_2D_TFIM.cpp 
 
-GenHam.o: CPU/GenHam.cpp CPU/GenHam.h CPU/Lanczos_07.h
-	$(CC) $(CFLAGS) -c CPU/GenHam.cpp
+CPU/magnetization.o: CPU/magnetization.cpp CPU/magnetization.h
+	$(CC) $(CFLAGS) -c CPU/magnetization.cpp -o CPU/magnetization.o
 
-#Lattice_16B.o: Lattice_16B.cpp GenHam.h 
-#	$(CC) $(CFLAGS) -c Lattice_16B.cpp
+CPU/GenHam.o: CPU/GenHam.cpp CPU/GenHam.h CPU/Lanczos_07.h
+	$(CC) $(CFLAGS) -c CPU/GenHam.cpp -o CPU/GenHam.o
 
-Lanczos_07.o: CPU/Lanczos_07.cpp CPU/GenHam.h CPU/Lanczos_07.h
-	$(CC) $(CFLAGS) -c CPU/Lanczos_07.cpp
+CPU/Lanczos_07.o: CPU/Lanczos_07.cpp CPU/GenHam.h CPU/Lanczos_07.h
+	$(CC) $(CFLAGS) -c CPU/Lanczos_07.cpp -o CPU/Lanczos_07.o
 
-graphs.o: ../Graphs/graphs.cpp ../Graphs/graphs.h
-	$(CC) $(CFLAGS) -c ../Graphs/graphs.cpp
+graphs.o: ../../BossBranch/Graphs/graphs.cpp ../../BossBranch/Graphs/graphs.h
+	$(CC) $(CFLAGS) -c ../../BossBranch/Graphs/graphs.cpp
+
 clean :
-	rm *.o
+	rm CPU/*.o && rm *.o
